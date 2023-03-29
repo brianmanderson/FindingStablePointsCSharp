@@ -15,19 +15,36 @@ namespace FindingStablePointsCSharp
 {
     internal class Program
     {
+        static SitkImage copy_base_information(SitkImage bare_image, SitkImage base_image)
+        {
+            bare_image.CopyInformation(base_image);
+            return SimpleITK.Cast(bare_image, base_image.GetPixelID());
+        }
+        static Image return_image_from_array(NDarray np_array)
+        {
+            int len = np_array.shape[0] * np_array.shape[1] * np_array.shape[2];
+            SitkImage outImage = new SitkImage((uint)np_array.shape[2], (uint)np_array.shape[1], (uint)np_array.shape[0],PixelId.sitkFloat32);
+            IntPtr outImageBuffer = outImage.GetBufferAsFloat();
+            Marshal.Copy(np_array.GetData<float>(), 0, outImageBuffer, len);
+            return outImage;
+        }
         static NDarray return_array_from_image(SitkImage image)
         {
-            VectorDouble voxel_size = image.GetSpacing();
             image = SimpleITK.Cast(image, PixelId.sitkFloat32);
 
             // calculate the number of pixels
             VectorUInt32 size = image.GetSize();
+            Shape output_shape = new Shape((int)size[2], (int)size[1], (int)size[0]);
             int len = 1;
             for (int dim = 0; dim < image.GetDimension(); dim++)
             {
                 len *= (int)size[dim];
             }
-            NDarray dose_np = new NDarray(image.GetBufferAsFloat(), len, np.float32);
+            float[] bufferAsArray = new float[len]; // Allocates new memory the size of input
+            IntPtr buffer = image.GetBufferAsFloat();
+            Marshal.Copy(buffer, bufferAsArray, 0, len);
+            NDarray dose_np = np.array(bufferAsArray);
+            dose_np = np.reshape(dose_np, output_shape);
             return dose_np;
         }
         static void Main(string[] args)
@@ -39,7 +56,10 @@ namespace FindingStablePointsCSharp
             reader.ReadImageInformation();
             SitkImage dose_handle = reader.Execute();
             NDarray dose_np = return_array_from_image(dose_handle);
-            var max_dose = np.max(dose_np);
+            SitkImage new_dose_handle = return_image_from_array(dose_np);
+            new_dose_handle = copy_base_information(new_dose_handle, dose_handle);
+            SimpleITK.WriteImage(new_dose_handle, @"C:\Users\markb\Modular_Projects\FindingStablePoints\dose_compared.nii.gz");
+            NDarray max_dose = np.max(dose_np);
             ConnectedComponentImageFilter Connected_Component_Filter = new ConnectedComponentImageFilter();
             ConnectedThresholdImageFilter Connected_Threshold = new ConnectedThresholdImageFilter();
             Connected_Threshold.SetLower(1);
@@ -48,44 +68,12 @@ namespace FindingStablePointsCSharp
             /*
             Next, identify each independent segmentation in both
             */
-            var masked_np = (dose_np >= limit * max_dose).astype(np.int32);
-            var base_mask = itk.GetImageFromArray(masked_np);
-            var connected_image_handle = Connected_Component_Filter.Execute(base_mask);
+            NDarray masked_np = (dose_np >= limit * max_dose).astype(np.int32);
+            //var connected_image_handle = Connected_Component_Filter.Execute(base_mask);
 
-            var RelabelComponentFilter = new itk.RelabelComponentImageFilter();
-            var connected_image = RelabelComponentFilter.Execute(connected_image_handle);
-            truth_stats.Execute(connected_image);
-            var bounding_boxes = np.asarray([truth_stats.GetBoundingBox(_) for _ in truth_stats.GetLabels()]) ;
-            for (int index = 0; index < bounding_boxes.shape[0]; index++)
-            {
-                var bounding_box = bounding_boxes[index];
-                var c_start = bounding_box[0];
-                var r_start = bounding_box[1];
-                var z_start = bounding_box[2];
-                var c_stop = c_start + bounding_box[3];
-                var r_stop = r_start + bounding_box[4];
-                var z_stop = z_start + bounding_box[5];
-                var dose_cube = dose_np[z_start: z_stop, r_start: r_stop, c_start: c_stop];
-                var gradient_np = np.abs(np.gradient(dose_cube, 2));
-                var super_imposed_gradient_np = np.sum(gradient_np, axis = 0);
-                // We want to convolve across three axis to make sure we are not near a gradient edge
-                for (int i = 0; i < camera_dimensions.Length; i++)
-                {
-                    var k = camera_dimensions[i];
-                    var voxels_needed = round_up_to_odd(k / voxel_size[i]);
-                    super_imposed_gradient_np = scipy.ndimage.convolve1d(super_imposed_gradient_np,
-                                                                         np.array([1 / voxels_needed
-                                                                                   for _ in range(voxels_needed)]), axis = i);
+            var RelabelComponentFilter = new RelabelComponentImageFilter();
+            //var connected_image = RelabelComponentFilter.Execute(connected_image_handle);
+            //truth_stats.Execute(connected_image);
         }
-        var min_gradient = np.min(super_imposed_gradient_np);
-        var min_location = np.where(super_imposed_gradient_np <= min_gradient * 1.1);
-        var min_z = (int)z_start + min_location[0][0];
-        var min_row = (int)r_start + min_location[1][0];
-        var min_col = (int)c_start + min_location[2][0];
-        var physical_location = dose_handle.TransformContinuousIndexToPhysicalPoint(new[] { min_col, min_row, min_z });
-        Console.WriteLine($"Identified position for one site: {physical_location}");
-}
-
-}
     }
 }
