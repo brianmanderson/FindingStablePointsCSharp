@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using itk.simple;
 using Numpy.Models;
 using Numpy;
-
 using SitkImage = itk.simple.Image;
 using PixelId = itk.simple.PixelIDValueEnum;
 using System.Runtime.InteropServices;
@@ -26,7 +25,7 @@ namespace FindingStablePointsCSharp
             bare_image.CopyInformation(base_image);
             return SimpleITK.Cast(bare_image, base_image.GetPixelID());
         }
-        static Image return_image_from_array(NDarray np_array)
+        static SitkImage return_image_from_array(NDarray np_array)
         {
             np_array = np_array.astype(np.float32);
             int len = np_array.shape[0] * np_array.shape[1] * np_array.shape[2];
@@ -58,7 +57,7 @@ namespace FindingStablePointsCSharp
         {
             SimpleITK.WriteImage(image, @"C:\Users\markb\Modular_Projects\FindingStablePoints\compared.nii.gz");
         }
-        static void Main(string[] args)
+        static void Main(ScriptContext context, string[] args)
         {
             string dose_file = @"C:\Users\markb\Modular_Projects\FindingStablePoints\dose.nii.gz";
             var reader = new ImageFileReader();
