@@ -57,7 +57,7 @@ namespace FindingStablePointsCSharp
         {
             SimpleITK.WriteImage(image, @"C:\Users\markb\Modular_Projects\FindingStablePoints\compared.nii.gz");
         }
-        static void Main(ScriptContext context, string[] args)
+        static void Main(string[] args)
         {
             string dose_file = @"C:\Users\markb\Modular_Projects\FindingStablePoints\dose.nii.gz";
             var reader = new ImageFileReader();
