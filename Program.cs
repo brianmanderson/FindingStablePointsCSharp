@@ -62,13 +62,13 @@ namespace FindingStablePointsCSharp
         {
             string dose_file = @"C:\Users\markb\Modular_Projects\FindingStablePoints\dose.nii.gz";
             var reader = new ImageFileReader();
-            double limit = 0.7;
+            double limit = 0.85;
+            List<float> camera_dimensions = new List<float> { 5, 5, 5 };
             reader.SetFileName(dose_file);
             reader.ReadImageInformation();
             SitkImage dose_handle = reader.Execute();
             VectorDouble voxel_size = dose_handle.GetSpacing();
 
-            List<float> camera_dimensions = new List<float> { 3, 5, 3 };
             List<int> voxels_needed = new List<int> { RoundUpToOdd(camera_dimensions[0] / voxel_size[0]) ,
             RoundUpToOdd(camera_dimensions[1] / voxel_size[1]), RoundUpToOdd(camera_dimensions[2] / voxel_size[2])};
             
@@ -106,17 +106,29 @@ namespace FindingStablePointsCSharp
                 uint z_stop = z_start + bounding_box[5];
                 NDarray dose_cube = dose_np[$"{z_start}:{z_stop},{r_start}:{r_stop},{c_start}:{c_stop}"];
                 NDarray gradient_np = np.abs(np.gradient(dose_cube, 2));
-                NDarray super_imposed_gradient_np = np.sum(gradient_np, 0);
-                NDarray min_gradient = np.min(super_imposed_gradient_np);
-                NDarray[] min_location = np.where(super_imposed_gradient_np <= min_gradient * 1.1);
+                gradient_np = np.sum(gradient_np, 0);
+                SitkImage gradient_handle = return_image_from_array(gradient_np);
+                NDarray kernel = np.ones(voxels_needed.ToArray());
+                kernel /= np.sum(kernel);
+                SitkImage kernel_handle = return_image_from_array(kernel);
+                SitkImage convolved_handle = SimpleITK.Convolution(gradient_handle, kernel_handle);
+
+                gradient_np = return_array_from_image(convolved_handle);
+                NDarray min_gradient = np.min(gradient_np);
+                NDarray[] min_location = np.where(gradient_np <= min_gradient * 1.1);
                 VectorDouble continous_index = new VectorDouble();
-                uint min_z =  z_start + (uint)min_location[0][0];
-                uint min_row = r_start + (uint)min_location[1][0];
-                uint min_col = c_start + (uint)min_location[2][0];
+                NDarray z_location = min_location[0];
+                NDarray r_location = min_location[1];
+                NDarray c_location = min_location[2];
+                uint min_z =  z_start + (uint)z_location[z_location.size/2];
+                uint min_row = r_start + (uint)r_location[z_location.size / 2];
+                uint min_col = c_start + (uint)c_location[z_location.size / 2];
                 continous_index.Add(min_col);
                 continous_index.Add(min_row);
                 continous_index.Add(min_z);
                 VectorDouble physical_location = dose_handle.TransformContinuousIndexToPhysicalPoint(continous_index);
+                Console.WriteLine($"Best location was found to be at {physical_location[0]}, {physical_location[1]}, {physical_location[2]}");
+                Console.ReadKey();
                 int x = 1;
             }
             //bounding_boxes = np.asarray([truth_stats.GetBoundingBox(_) for _ in truth_stats.GetLabels()])
