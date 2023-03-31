@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF7F0395-B271-434D-AB9D-67401DDD6B78}</ProjectGuid>
+    <ProjectGuid>{66AFC246-5360-41A3-9938-9BE0D5641641}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StablePointFinderClass</RootNamespace>
-    <AssemblyName>StablePointFinderClass</AssemblyName>
+    <RootNamespace>Stability.StablePointFinderClass</RootNamespace>
+    <AssemblyName>Stability.StablePointFinderClass</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -50,19 +50,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Numpy, Version=3.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Numpy.3.11.1.33\lib\netstandard2.0\Numpy.dll</HintPath>
+      <HintPath>..\packages\Numpy.3.11.1.33\lib\netstandard2.0\Numpy.dll</HintPath>
     </Reference>
     <Reference Include="Python.Deployment, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Python.Deployment.2.0.0\lib\netstandard2.0\Python.Deployment.dll</HintPath>
+      <HintPath>..\packages\Python.Deployment.2.0.0\lib\netstandard2.0\Python.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="Python.Included, Version=3.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Python.Included.3.11.1\lib\netstandard2.0\Python.Included.dll</HintPath>
+      <HintPath>..\packages\Python.Included.3.11.1\lib\netstandard2.0\Python.Included.dll</HintPath>
     </Reference>
     <Reference Include="Python.Runtime, Version=3.0.1.0, Culture=neutral, PublicKeyToken=5000fea6cba702dd, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\pythonnet.3.0.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
+      <HintPath>..\packages\pythonnet.3.0.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="SimpleITKCSharpManaged">
-      <HintPath>..\..\..\..\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
+      <HintPath>..\..\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,7 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\SimpleITK\SimpleITKCSharpNative.dll">
+    <Content Include="..\..\SimpleITK\SimpleITKCSharpNative.dll">
       <Link>SimpleITKCSharpNative.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

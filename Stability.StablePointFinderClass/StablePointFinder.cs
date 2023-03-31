@@ -9,12 +9,10 @@ using Numpy;
 using SitkImage = itk.simple.Image;
 using PixelId = itk.simple.PixelIDValueEnum;
 using System.Runtime.InteropServices;
-using System.Security.Policy;
-using System.Reflection;
 
-namespace FindingStablePointsCSharp
+namespace Stability.StablePointFinderClass
 {
-    internal class Program
+    public class StablePointFinder
     {
         public static int RoundUpToOdd(double f)
         {
@@ -57,13 +55,32 @@ namespace FindingStablePointsCSharp
         {
             SimpleITK.WriteImage(image, @"C:\Users\markb\Modular_Projects\FindingStablePoints\compared.nii.gz");
         }
-
-        static void Main(string[] args)
+        ImageFileReader reader = new ImageFileReader();
+        List<float> camera_dimensions = new List<float> { 5, 5, 5 };
+        string dose_file;
+        double dose_limit = 0.85;
+        public StablePointFinder(string dose_file)
         {
-            string dose_file = @"C:\Users\markb\Modular_Projects\FindingStablePoints\dose.nii.gz";
-            ImageFileReader reader = new ImageFileReader();
-            List<float> camera_dimensions = new List<float> { 5, 5, 5 };
-            double dose_limit = 0.85;
+            this.dose_file = dose_file;
+        }
+        public StablePointFinder(string dose_file, double dose_limit)
+        {
+            this.dose_file = dose_file;
+            this.dose_limit = dose_limit;
+        }
+        public StablePointFinder(string dose_file, List<float> camera_dimensions)
+        {
+            this.dose_file = dose_file;
+            this.camera_dimensions = camera_dimensions;
+        }
+        public StablePointFinder(string dose_file, double dose_limit, List<float> camera_dimensions)
+        {
+            this.dose_file = dose_file;
+            this.camera_dimensions = camera_dimensions;
+            this.dose_limit = dose_limit;
+        }
+        public void execute()
+        {
             reader.SetFileName(dose_file);
             reader.ReadImageInformation();
             SitkImage dose_handle = reader.Execute();
@@ -130,8 +147,6 @@ namespace FindingStablePointsCSharp
                 Console.WriteLine($"Best location was found to be at {physical_location[0]}, {physical_location[1]}, {physical_location[2]}");
                 Console.ReadKey();
             }
-                //bounding_boxes = np.asarray([truth_stats.GetBoundingBox(_) for _ in truth_stats.GetLabels()])
-                
         }
     }
 }

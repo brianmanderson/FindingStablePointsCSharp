@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FindingStablePointsCSharp")]
+[assembly: AssemblyTitle("Stability.StablePointFinderClass")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FindingStablePointsCSharp")]
+[assembly: AssemblyProduct("Stability.StablePointFinderClass")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("97769d49-79a7-421a-8481-3171359f747e")]
+[assembly: Guid("66afc246-5360-41a3-9938-9be0d5641641")]
 
 // Version information for an assembly consists of the following four values:
 //
