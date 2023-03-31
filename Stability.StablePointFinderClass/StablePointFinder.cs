@@ -59,31 +59,43 @@ namespace Stability.StablePointFinderClass
         List<float> camera_dimensions = new List<float> { 5, 5, 5 };
         string dose_file;
         double dose_limit = 0.85;
+        SitkImage dose_handle;
         public StablePointFinder(string dose_file)
         {
             this.dose_file = dose_file;
+            load_image();
+        }
+        public StablePointFinder(SitkImage dose_handle)
+        {
+            this.dose_handle = dose_handle;
         }
         public StablePointFinder(string dose_file, double dose_limit)
         {
             this.dose_file = dose_file;
             this.dose_limit = dose_limit;
+            load_image();
         }
         public StablePointFinder(string dose_file, List<float> camera_dimensions)
         {
             this.dose_file = dose_file;
             this.camera_dimensions = camera_dimensions;
+            load_image();
         }
         public StablePointFinder(string dose_file, double dose_limit, List<float> camera_dimensions)
         {
             this.dose_file = dose_file;
             this.camera_dimensions = camera_dimensions;
             this.dose_limit = dose_limit;
+            load_image();
         }
-        public void execute()
+        public void load_image()
         {
             reader.SetFileName(dose_file);
             reader.ReadImageInformation();
-            SitkImage dose_handle = reader.Execute();
+            dose_handle = reader.Execute();
+        }
+        public void execute()
+        {
             VectorDouble voxel_size = dose_handle.GetSpacing();
 
             List<int> voxels_needed = new List<int> { RoundUpToOdd(camera_dimensions[0] / voxel_size[0]) ,
@@ -106,7 +118,7 @@ namespace Stability.StablePointFinderClass
 
             RelabelComponentImageFilter RelabelComponentFilter = new RelabelComponentImageFilter();
             SitkImage connected_image = RelabelComponentFilter.Execute(connected_image_handle);
-            write_image(connected_image);
+            //write_image(connected_image);
             truth_stats.Execute(connected_image);
             List<VectorUInt32> bounding_boxes = new List<VectorUInt32>();
             foreach (long label in truth_stats.GetLabels())
@@ -145,7 +157,7 @@ namespace Stability.StablePointFinderClass
                 continous_index.Add(min_z);
                 VectorDouble physical_location = dose_handle.TransformContinuousIndexToPhysicalPoint(continous_index);
                 Console.WriteLine($"Best location was found to be at {physical_location[0]}, {physical_location[1]}, {physical_location[2]}");
-                Console.ReadKey();
+                //Console.ReadKey();
             }
         }
     }

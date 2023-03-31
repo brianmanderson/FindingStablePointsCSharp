@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{66AFC246-5360-41A3-9938-9BE0D5641641}</ProjectGuid>
+    <ProjectGuid>{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stability.StablePointFinderClass</RootNamespace>
     <AssemblyName>Stability.StablePointFinderClass</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -62,7 +62,7 @@
       <HintPath>..\packages\pythonnet.3.0.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="SimpleITKCSharpManaged">
-      <HintPath>..\..\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
+      <HintPath>..\..\..\..\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,7 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\SimpleITK\SimpleITKCSharpNative.dll">
+    <Content Include="..\..\..\..\SimpleITK\SimpleITKCSharpNative.dll">
       <Link>SimpleITKCSharpNative.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
