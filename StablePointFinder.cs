@@ -8,7 +8,6 @@ using VMS.TPS.Common.Model.Types;
 using SitkImage = itk.simple.Image;
 using itk.simple;
 using Stability.FinderClass;
-using Stability.Tools;
 using System.Data;
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
