@@ -17,7 +17,7 @@ using Stability.StablePointFinderClass;
 // TODO: Uncomment the following line if the script requires write access.
 // [assembly: ESAPIScript(IsWriteable = true)]
 
-namespace StablePointFinderApp
+namespace Stability.EsapiApp
 {
   class Program
   {
