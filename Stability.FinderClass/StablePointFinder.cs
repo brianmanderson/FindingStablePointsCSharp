@@ -10,7 +10,6 @@ using SitkImage = itk.simple.Image;
 using PixelId = itk.simple.PixelIDValueEnum;
 using System.Threading.Tasks;
 using Stability.StaticTools;
-using Stability.FinderClass.Services;
 
 namespace Stability.FinderClass
 {

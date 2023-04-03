@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="StablePointFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\StaticTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
