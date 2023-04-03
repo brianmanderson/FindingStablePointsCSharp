@@ -7,7 +7,8 @@ using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 using SitkImage = itk.simple.Image;
 using itk.simple;
-using Stability.StablePointFinderClass;
+using Stability.FinderClass;
+using Stability.Tools;
 using System.Data;
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
@@ -36,6 +37,41 @@ namespace Stability.EsapiApp
             {
                 Console.Error.WriteLine(e.ToString());
             }
+        }
+        static int FindMaxValue(Dose dose)
+        {
+            int maxValue = 0;
+            int[,] buffer = new int[dose.XSize, dose.YSize];
+            if (dose != null)
+            {
+                for (int z = 0; z < dose.ZSize; z++)
+                {
+                    dose.GetVoxels(z, buffer);
+                    for (int y = 0; y < dose.YSize; y++)
+                    {
+                        for (int x = 0; x < dose.XSize; x++)
+                        {
+                            int value = buffer[x, y];
+                            if (value > maxValue)
+                                maxValue = value;
+                        }
+                    }
+                }
+            }
+            return maxValue;
+        }
+        private static VVector GetZDirection(VVector a, VVector b)
+        {
+            // return cross product
+            return new VVector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+        }
+        static void write_image(SitkImage image)
+        {
+            SimpleITK.WriteImage(image, @"C:\Users\fpenaloza\Downloads\compared.nii.gz");
+        }
+        static void write_image(SitkImage image, string location)
+        {
+            SimpleITK.WriteImage(image, location);
         }
         static SitkImage DoseToImage(Dose dose)
         {
@@ -84,7 +120,7 @@ namespace Stability.EsapiApp
                     Dose dose = plan.Dose;
                     //int maxValueForScaling = FindMaxValue(dose);
                     SitkImage dose_handle = DoseToImage(dose);
-                    StablePointFinder finder = new StablePointFinder(dose_handle);
+                    StablePointFinder finder = new StablePointFinder(dose_handle: dose_handle);
                     finder.execute();
                 }
             }

@@ -9,20 +9,12 @@ using Numpy;
 using SitkImage = itk.simple.Image;
 using PixelId = itk.simple.PixelIDValueEnum;
 using System.Threading.Tasks;
+using Stability.StaticTools;
 
 namespace Stability.FinderClass
 {
     public class StablePointFinder
     {
-        public static int RoundUpToOdd(double f)
-        {
-            return (int)(Math.Ceiling(f) / 2) * 2 + 1;
-        }
-        static SitkImage copy_base_information(SitkImage bare_image, SitkImage base_image)
-        {
-            bare_image.CopyInformation(base_image);
-            return SimpleITK.Cast(bare_image, base_image.GetPixelID());
-        }
         static SitkImage return_image_from_array(NDarray np_array)
         {
             np_array = np_array.astype(np.float32);
@@ -51,47 +43,53 @@ namespace Stability.FinderClass
             dose_np = np.reshape(dose_np, output_shape);
             return dose_np;
         }
-        static void write_image(SitkImage image, string file_path)
-        {
-            SimpleITK.WriteImage(image, file_path);
-        }
-        static void write_image(SitkImage image)
-        {
-            SimpleITK.WriteImage(image, @"C:\Users\markb\Modular_Projects\FindingStablePoints\compared.nii.gz");
-        }
+
         ImageFileReader reader = new ImageFileReader();
         List<float> camera_dimensions = new List<float> { 5, 5, 5 };
+        SitkImage dose_handle;
         string dose_file;
         double dose_limit = 0.85;
+        public StablePointFinder(SitkImage dose_handle)
+        {
+            this.dose_handle = dose_handle;
+            load_image();
+        }
         public StablePointFinder(string dose_file)
         {
             this.dose_file = dose_file;
+            load_image();
         }
         public StablePointFinder(string dose_file, double dose_limit)
         {
             this.dose_file = dose_file;
             this.dose_limit = dose_limit;
+            load_image();
         }
         public StablePointFinder(string dose_file, List<float> camera_dimensions)
         {
             this.dose_file = dose_file;
             this.camera_dimensions = camera_dimensions;
+            load_image();
         }
         public StablePointFinder(string dose_file, double dose_limit, List<float> camera_dimensions)
         {
             this.dose_file = dose_file;
             this.camera_dimensions = camera_dimensions;
             this.dose_limit = dose_limit;
+            load_image();
         }
-        public void execute()
+        public void load_image()
         {
             reader.SetFileName(dose_file);
             reader.ReadImageInformation();
-            SitkImage dose_handle = reader.Execute();
-            VectorDouble voxel_size = dose_handle.GetSpacing();
+            dose_handle = reader.Execute();
+        }
+        public void execute()
+        {
 
-            List<int> voxels_needed = new List<int> { RoundUpToOdd(camera_dimensions[0] / voxel_size[0]) ,
-            RoundUpToOdd(camera_dimensions[1] / voxel_size[1]), RoundUpToOdd(camera_dimensions[2] / voxel_size[2])};
+            VectorDouble voxel_size = dose_handle.GetSpacing();
+            List<int> voxels_needed = new List<int> { Tools.RoundUpToOdd(camera_dimensions[0] / voxel_size[0]) , 
+                Tools.RoundUpToOdd(camera_dimensions[1] / voxel_size[1]), Tools.RoundUpToOdd(camera_dimensions[2] / voxel_size[2])};
 
             NDarray dose_np = return_array_from_image(dose_handle);
             ConnectedComponentImageFilter Connected_Component_Filter = new ConnectedComponentImageFilter();

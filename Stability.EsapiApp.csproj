@@ -35,10 +35,6 @@
     <Reference Include="SimpleITKCSharpManaged">
       <HintPath>..\..\Modular_Projects\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
     </Reference>
-    <Reference Include="Stability.StablePointFinderClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Stability.StablePointFinderClass\bin\x64\Debug\Stability.StablePointFinderClass.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -59,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StablePointFinder.cs" />
+    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -67,6 +64,12 @@
     <Content Include="..\..\Modular_Projects\SimpleITK\SimpleITKCSharpNative.dll">
       <Link>SimpleITKCSharpNative.dll</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Stability.FinderClass\Stability.FinderClass.csproj">
+      <Project>{7ed3ff14-a65d-498d-a6a1-55747d30bd24}</Project>
+      <Name>Stability.FinderClass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

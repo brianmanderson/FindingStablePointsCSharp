@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7ED3FF14-A65D-498D-A6A1-55747D30BD24}</ProjectGuid>
+    <ProjectGuid>{52A4F1DF-B372-4D79-A516-561294685A8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stability.FinderClass</RootNamespace>
-    <AssemblyName>Stability.FinderClass</AssemblyName>
+    <RootNamespace>Stability.StaticTools</RootNamespace>
+    <AssemblyName>Stability.StaticTools</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,18 +49,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Numpy, Version=3.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Numpy.3.11.1.33\lib\netstandard2.0\Numpy.dll</HintPath>
-    </Reference>
-    <Reference Include="Python.Deployment, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Python.Deployment.2.0.0\lib\netstandard2.0\Python.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="Python.Included, Version=3.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Python.Included.3.11.1\lib\netstandard2.0\Python.Included.dll</HintPath>
-    </Reference>
-    <Reference Include="Python.Runtime, Version=3.0.1.0, Culture=neutral, PublicKeyToken=5000fea6cba702dd, processorArchitecture=MSIL">
-      <HintPath>..\packages\pythonnet.3.0.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="SimpleITKCSharpManaged">
       <HintPath>..\..\..\Modular_Projects\SimpleITK\SimpleITKCSharpManaged.dll</HintPath>
     </Reference>
@@ -74,23 +62,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StablePointFinder.cs" />
+    <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\..\Modular_Projects\SimpleITK\SimpleITKCSharpNative.dll">
       <Link>SimpleITKCSharpNative.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Stability.StaticTools\Stability.StaticTools.csproj">
-      <Project>{52a4f1df-b372-4d79-a516-561294685a8b}</Project>
-      <Name>Stability.StaticTools</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
