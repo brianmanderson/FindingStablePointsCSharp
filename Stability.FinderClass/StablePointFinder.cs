@@ -24,7 +24,6 @@ namespace Stability.FinderClass
         public StablePointFinder(SitkImage dose_handle)
         {
             this.dose_handle = dose_handle;
-            load_image();
         }
         public StablePointFinder(string dose_file)
         {
