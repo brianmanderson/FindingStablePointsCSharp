@@ -5,13 +5,11 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.EsapiApp", "Stability.EsapiApp.csproj", "{F2D59B5D-0009-4DC5-87E7-BFC7BF4B8EA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.StablePointFinderClassOld", "Stability.StablePointFinderClass\Stability.StablePointFinderClassOld.csproj", "{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.ConsoleRunner", "Stability.ConsoleRunner\Stability.ConsoleRunner.csproj", "{6ABB40D9-0C50-44BF-9067-702C7A2008C4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.FinderClass", "Stability.FinderClass\Stability.FinderClass.csproj", "{7ED3FF14-A65D-498D-A6A1-55747D30BD24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.ConsoleAppRunner", "Stability.ConsoleAppRunner\Stability.ConsoleAppRunner.csproj", "{D27D5519-7332-4FF2-B38A-AB2093E070BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stability.ConsoleAppNet", "Stability.ConsoleAppNet\Stability.ConsoleAppNet.csproj", "{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,22 +27,6 @@ Global
 		{F2D59B5D-0009-4DC5-87E7-BFC7BF4B8EA3}.Release|Any CPU.Build.0 = Release|x64
 		{F2D59B5D-0009-4DC5-87E7-BFC7BF4B8EA3}.Release|x64.ActiveCfg = Release|x64
 		{F2D59B5D-0009-4DC5-87E7-BFC7BF4B8EA3}.Release|x64.Build.0 = Release|x64
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Debug|Any CPU.Build.0 = Debug|x64
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Debug|x64.ActiveCfg = Debug|x64
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Debug|x64.Build.0 = Debug|x64
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Release|x64.ActiveCfg = Release|Any CPU
-		{E7BF5553-2DBE-4E7E-8EE2-92CD2F06E9F2}.Release|x64.Build.0 = Release|Any CPU
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Debug|Any CPU.Build.0 = Debug|x64
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Debug|x64.ActiveCfg = Debug|x64
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Debug|x64.Build.0 = Debug|x64
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Release|x64.ActiveCfg = Release|Any CPU
-		{6ABB40D9-0C50-44BF-9067-702C7A2008C4}.Release|x64.Build.0 = Release|Any CPU
 		{7ED3FF14-A65D-498D-A6A1-55747D30BD24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7ED3FF14-A65D-498D-A6A1-55747D30BD24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ED3FF14-A65D-498D-A6A1-55747D30BD24}.Debug|x64.ActiveCfg = Debug|x64
@@ -61,6 +43,14 @@ Global
 		{D27D5519-7332-4FF2-B38A-AB2093E070BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D27D5519-7332-4FF2-B38A-AB2093E070BB}.Release|x64.ActiveCfg = Release|Any CPU
 		{D27D5519-7332-4FF2-B38A-AB2093E070BB}.Release|x64.Build.0 = Release|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Debug|x64.ActiveCfg = Debug|x64
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Debug|x64.Build.0 = Debug|x64
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED762237-2E42-4A3C-AB5F-C9FF6F1A39FA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
