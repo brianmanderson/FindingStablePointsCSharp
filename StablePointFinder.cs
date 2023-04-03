@@ -20,57 +20,22 @@ using System.Data;
 
 namespace Stability.EsapiApp
 {
-  class Program
-  {
-    [STAThread]
-    static void Main(string[] args)
+    class Program
     {
-      try
-      {
-        using (Application app = Application.CreateApplication())
+        [STAThread]
+        static void Main(string[] args)
         {
-          Execute(app);
-        }
-      }
-      catch (Exception e)
-      {
-        Console.Error.WriteLine(e.ToString());
-      }
-    }
-        static int FindMaxValue(Dose dose)
-        {
-            int maxValue = 0;
-            int[,] buffer = new int[dose.XSize, dose.YSize];
-            if (dose != null)
+            try
             {
-                for (int z = 0; z < dose.ZSize; z++)
+                using (Application app = Application.CreateApplication())
                 {
-                    dose.GetVoxels(z, buffer);
-                    for (int y = 0; y < dose.YSize; y++)
-                    {
-                        for (int x = 0; x < dose.XSize; x++)
-                        {
-                            int value = buffer[x, y];
-                            if (value > maxValue)
-                                maxValue = value;
-                        }
-                    }
+                    Execute(app);
                 }
             }
-            return maxValue;
-        }
-        private static VVector GetZDirection(VVector a, VVector b)
-        {
-            // return cross product
-            return new VVector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
-        }
-        static void write_image(SitkImage image)
-        {
-            SimpleITK.WriteImage(image, @"C:\Users\fpenaloza\Downloads\compared.nii.gz");
-        }
-        static void write_image(SitkImage image, string location)
-        {
-            SimpleITK.WriteImage(image, location);
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
         }
         static SitkImage DoseToImage(Dose dose)
         {
