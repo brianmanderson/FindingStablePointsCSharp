@@ -10,40 +10,12 @@ using SitkImage = itk.simple.Image;
 using PixelId = itk.simple.PixelIDValueEnum;
 using System.Threading.Tasks;
 using Stability.StaticTools;
+using Stability.FinderClass.Services;
 
 namespace Stability.FinderClass
 {
     public class StablePointFinder
     {
-        static SitkImage return_image_from_array(NDarray np_array)
-        {
-            np_array = np_array.astype(np.float32);
-            int len = np_array.shape[0] * np_array.shape[1] * np_array.shape[2];
-            SitkImage outImage = new SitkImage((uint)np_array.shape[2], (uint)np_array.shape[1], (uint)np_array.shape[0], PixelId.sitkFloat32);
-            IntPtr outImageBuffer = outImage.GetBufferAsFloat();
-            Marshal.Copy(np_array.GetData<float>(), 0, outImageBuffer, len);
-            return outImage;
-        }
-        static NDarray return_array_from_image(SitkImage image)
-        {
-            image = SimpleITK.Cast(image, PixelId.sitkFloat32);
-
-            // calculate the number of pixels
-            VectorUInt32 size = image.GetSize();
-            Shape output_shape = new Shape((int)size[2], (int)size[1], (int)size[0]);
-            int len = 1;
-            for (int dim = 0; dim < image.GetDimension(); dim++)
-            {
-                len *= (int)size[dim];
-            }
-            float[] bufferAsArray = new float[len]; // Allocates new memory the size of input
-            IntPtr buffer = image.GetBufferAsFloat();
-            Marshal.Copy(buffer, bufferAsArray, 0, len);
-            NDarray dose_np = np.array(bufferAsArray);
-            dose_np = np.reshape(dose_np, output_shape);
-            return dose_np;
-        }
-
         ImageFileReader reader = new ImageFileReader();
         List<float> camera_dimensions = new List<float> { 5, 5, 5 };
         SitkImage dose_handle;
@@ -90,8 +62,7 @@ namespace Stability.FinderClass
             VectorDouble voxel_size = dose_handle.GetSpacing();
             List<int> voxels_needed = new List<int> { Tools.RoundUpToOdd(camera_dimensions[0] / voxel_size[0]) , 
                 Tools.RoundUpToOdd(camera_dimensions[1] / voxel_size[1]), Tools.RoundUpToOdd(camera_dimensions[2] / voxel_size[2])};
-
-            NDarray dose_np = return_array_from_image(dose_handle);
+            NDarray dose_np = Services.StaticTools.return_array_from_image(dose_handle);
             ConnectedComponentImageFilter Connected_Component_Filter = new ConnectedComponentImageFilter();
             ConnectedThresholdImageFilter Connected_Threshold = new ConnectedThresholdImageFilter();
             Connected_Threshold.SetLower(1);
@@ -101,7 +72,7 @@ namespace Stability.FinderClass
             Next, identify each independent segmentation in both
             */
             NDarray masked_np = (dose_np >= dose_limit * np.max(dose_np));
-            SitkImage base_mask = return_image_from_array(masked_np);
+            SitkImage base_mask = Services.StaticTools.return_image_from_array(masked_np);
             base_mask = SimpleITK.Cast(base_mask, PixelId.sitkInt32);
 
             SitkImage connected_image_handle = Connected_Component_Filter.Execute(base_mask);
@@ -125,13 +96,13 @@ namespace Stability.FinderClass
                 NDarray dose_cube = dose_np[$"{z_start}:{z_stop},{r_start}:{r_stop},{c_start}:{c_stop}"];
                 NDarray gradient_np = np.abs(np.gradient(dose_cube, 2));
                 gradient_np = np.sum(gradient_np, 0);
-                SitkImage gradient_handle = return_image_from_array(gradient_np);
+                SitkImage gradient_handle = Services.StaticTools.return_image_from_array(gradient_np);
                 NDarray kernel = np.ones(voxels_needed.ToArray());
                 kernel /= np.sum(kernel);
-                SitkImage kernel_handle = return_image_from_array(kernel);
+                SitkImage kernel_handle = Services.StaticTools.return_image_from_array(kernel);
                 SitkImage convolved_handle = SimpleITK.Convolution(gradient_handle, kernel_handle);
 
-                gradient_np = return_array_from_image(convolved_handle);
+                gradient_np = Services.StaticTools.return_array_from_image(convolved_handle);
                 NDarray min_gradient = np.min(gradient_np);
                 NDarray[] min_location = np.where(gradient_np <= min_gradient * 1.1);
                 VectorDouble continous_index = new VectorDouble();
